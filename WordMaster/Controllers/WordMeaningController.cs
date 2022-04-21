@@ -7,28 +7,32 @@ using WordMaster.Models;
 
 namespace WordMaster.Controllers
 {
-    public class LanguageController : Controller
+    public class WordMeaningController : Controller
     {
-        ILanguageRepository _repository;
-        public LanguageController(ILanguageRepository repository)
+        IWordMeaningRepository _repository;
+
+        public WordMeaningController(IWordMeaningRepository repository)
         {
             _repository = repository;
         }
-        // GET: LanguageController
+
+
+        // GET: WordMeaningController
         public ActionResult Index()
         {
-            List<LanguageViewModel> model = new List<LanguageViewModel>();
+            List<WordMeaningViewModel> model = new List<WordMeaningViewModel>();
 
-            List<Language> liste = _repository.List();
+            List<WordMeaning> liste = _repository.List();
 
-            foreach(Language Item in liste)
+            foreach (WordMeaning Item in liste)
             {
-                LanguageViewModel lwm = new LanguageViewModel()
+                WordMeaningViewModel lwm = new WordMeaningViewModel()
                 {
-                    Name = Item.Name,
                     Id = Item.Id,
-                    Code = Item.Code,
-                    
+                    Meaning = Item.Meaning,
+                    LangId = Item.LangId,
+                    WordDefinitionId = Item.WordDefinitionId,
+
                 };
                 model.Add(lwm);
             }
@@ -36,19 +40,19 @@ namespace WordMaster.Controllers
             return View(model);
         }
 
-        // GET: LanguageController/Details/5
+        // GET: WordMeaningController/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: LanguageController/Create
+        // GET: WordMeaningController/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: LanguageController/Create
+        // POST: WordMeaningController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
@@ -63,35 +67,40 @@ namespace WordMaster.Controllers
             }
         }
 
-        // GET: LanguageController/Edit/5
+        // GET: WordMeaningController/Edit/5
         public ActionResult Edit(int? id)
         {
-            LanguageViewModel model = new LanguageViewModel();
+            WordMeaningViewModel model = new WordMeaningViewModel();
             if (id.HasValue && id > 0)
             {
-                Language lang = _repository.GetById(id.Value);
+                WordMeaning lang = _repository.GetById(id.Value);
 
-                model.Name = lang.Name;
+                model.Meaning = lang.Meaning;
                 model.Id = lang.Id;
-                model.Code = lang.Code;
+                model.LangId = lang.LangId;
+                model.WordDefinitionId = lang.WordDefinitionId;
             }
             return View(model);
-            
+
         }
 
-        // POST: LanguageController/Edit/5
+        // POST: WordMeaningController/Edit/5
+
+
+        // GET: WordMeaningController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(LanguageViewModel model)
+        public ActionResult Edit(WordMeaningViewModel model)
         {
-            Language entitiy = new Language() 
-            { 
-                Code = model.Code, 
-                Id =model.Id, 
-                Name=model.Name 
+            WordMeaning entitiy = new WordMeaning()
+            {
+                Meaning = model.Meaning,
+                Id = model.Id,
+                LangId = model.LangId,
+                WordDefinitionId = model.WordDefinitionId
             };
 
-            if (entitiy.Id>0)
+            if (entitiy.Id > 0)
             {
                 _repository.Update(entitiy);
             }
@@ -102,31 +111,13 @@ namespace WordMaster.Controllers
             return RedirectToAction("Index");
         }
 
-
-
-        // GET: LanguageController/Delete/5
+       
+        
         public ActionResult Delete(int id)
         {
             _repository.Delete(id);
             return RedirectToAction("Index");
             return View();
-        }
-
-
-
-        // POST: LanguageController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }

@@ -7,30 +7,30 @@ using WordMaster.Models;
 
 namespace WordMaster.Controllers
 {
-    public class LanguageController : Controller
+    public class WordDefinitionController : Controller
     {
-        ILanguageRepository _repository;
-        public LanguageController(ILanguageRepository repository)
+        IWordDefinitionRepository _repository;
+        public WordDefinitionController(IWordDefinitionRepository repository)
         {
             _repository = repository;
         }
         // GET: LanguageController
         public ActionResult Index()
         {
-            List<LanguageViewModel> model = new List<LanguageViewModel>();
+            List<WordDefinitionViewModel> model = new List<WordDefinitionViewModel>();
 
-            List<Language> liste = _repository.List();
+            List<WordDefinition> liste = _repository.List();
 
-            foreach(Language Item in liste)
+            foreach(WordDefinition Item in liste)
             {
-                LanguageViewModel lwm = new LanguageViewModel()
+                WordDefinitionViewModel wdm = new WordDefinitionViewModel()
                 {
-                    Name = Item.Name,
+                    Word = Item.Word,
                     Id = Item.Id,
-                    Code = Item.Code,
+                    LangId = Item.LangId,
                     
                 };
-                model.Add(lwm);
+                model.Add(wdm);
             }
 
             return View(model);
@@ -48,32 +48,19 @@ namespace WordMaster.Controllers
             return View();
         }
 
-        // POST: LanguageController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        
 
         // GET: LanguageController/Edit/5
         public ActionResult Edit(int? id)
         {
-            LanguageViewModel model = new LanguageViewModel();
+            WordDefinitionViewModel model = new WordDefinitionViewModel();
             if (id.HasValue && id > 0)
             {
-                Language lang = _repository.GetById(id.Value);
+                WordDefinition def = _repository.GetById(id.Value);
 
-                model.Name = lang.Name;
-                model.Id = lang.Id;
-                model.Code = lang.Code;
+                model.Word = def.Word;
+                model.Id = def.Id;
+                model.LangId = def.LangId;
             }
             return View(model);
             
@@ -82,13 +69,13 @@ namespace WordMaster.Controllers
         // POST: LanguageController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(LanguageViewModel model)
+        public ActionResult Edit(WordDefinitionViewModel model)
         {
-            Language entitiy = new Language() 
+            WordDefinition entitiy = new WordDefinition() 
             { 
-                Code = model.Code, 
-                Id =model.Id, 
-                Name=model.Name 
+                LangId = model.LangId, 
+                Id =model.Id,
+                Word = model.Word
             };
 
             if (entitiy.Id>0)

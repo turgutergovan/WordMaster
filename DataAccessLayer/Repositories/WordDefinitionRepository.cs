@@ -9,36 +9,39 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Repositories
 {
-    public class WordMeaningRepository: IWordMeaningRepository
+    public class WordDefinitionRepository: IWordDefinitionRepository
     {
-
         WordMasterDbContext _context;
-        public WordMeaningRepository(WordMasterDbContext context)
+        public WordDefinitionRepository(WordMasterDbContext context)
         {
             _context = context;
         }
 
 
 
-        public WordMeaning GetById(int id)
+        public WordDefinition GetById(int id)
         {
-            return _context.Set<WordMeaning>().Find(id);
+            return _context.Set<WordDefinition>().Find(id);
         }
 
-        public List<WordMeaning> List()
+
+
+        public List<WordDefinition> List()
         {
-            return _context.Set<WordMeaning>().ToList();
+            return _context.Set<WordDefinition>().ToList();
         }
 
-        public void Add(WordMeaning entitiy)
+
+
+        public void Add(WordDefinition entitiy)
         {
-            _context.Set<WordMeaning>().Add(entitiy);
+            _context.Set<WordDefinition>().Add(entitiy);
             _context.SaveChanges();
         }
 
 
 
-        public void Update(WordMeaning entitiy)
+        public void Update(WordDefinition entitiy)
         {
             _context.Attach(entitiy);
             _context.Entry(entitiy).State = EntityState.Modified;
@@ -47,13 +50,12 @@ namespace DataAccessLayer.Repositories
 
 
 
-        public void Delete(int id)
+        public void Delete (int id)
         {
             var silinecek = GetById(id);
-            _context.Set<WordMeaning>().Remove(silinecek);
+            _context.Set<WordDefinition>().Remove(silinecek);
             _context.SaveChanges();
         }
 
-        
     }
 }

@@ -33,6 +33,8 @@ namespace WordMaster
                 options.UseSqlServer(Configuration.GetConnectionString("MssqlConnection")));
             services.AddControllersWithViews();
             services.AddScoped<ILanguageRepository, LanguageRepository>();
+            services.AddScoped<IWordMeaningRepository, WordMeaningRepository>();
+            services.AddScoped<IWordDefinitionRepository, WordDefinitionRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
