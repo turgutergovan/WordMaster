@@ -9,52 +9,51 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Repositories
 {
-    public class LanguageRepository: ILanguageRepository
+    public class LanguageRepository : RepositoryBase<Language>, ILanguageRepository
     {
-        WordMasterDbContext _context;
-        public LanguageRepository(WordMasterDbContext context)
+        public LanguageRepository(WordMasterDbContext context) : base(context)
         {
-            _context = context;
+
         }
 
 
 
-        public Language GetById(int id)
-        {
-            return _context.Set<Language>().Find(id);
-        }
+        //public Language GetById(int id)
+        //{
+        //    return _context.Set<Language>().Find(id);
+        //}
 
 
 
-        public List<Language> List()
-        {
-            return _context.Set<Language>().ToList();
-        }
+        //public List<Language> List()
+        //{
+        //    return _context.Set<Language>().ToList();
+        //}
 
 
 
-        public void Add(Language entitiy)
-        {
-            _context.Set<Language>().Add(entitiy);
-            _context.SaveChanges();
-        }
+        //public void Add(Language entitiy)
+        //{
+        //    _context.Set<Language>().Add(entitiy);
+        //    _context.SaveChanges();
+        //}
 
 
 
-        public void Update(Language entitiy)
-        {
-            _context.Attach(entitiy);
-            _context.Entry(entitiy).State = EntityState.Modified;
-            _context.SaveChanges();
-        }
+        //public void Update(Language entitiy)
+        //{
+        //    _context.Attach(entitiy);
+        //    _context.Entry(entitiy).State = EntityState.Modified;
+        //    _context.SaveChanges();
+        //}
 
 
 
-        public void Delete (int id)
-        {
-            var silinecek = GetById(id);
-            _context.Set<Language>().Remove(silinecek);
-            _context.SaveChanges();
-        }
+        //public void Delete (int id)
+        //{
+        //    var silinecek = GetById(id);
+        //    _context.Set<Language>().Remove(silinecek);
+        //    _context.SaveChanges();
+        //}
     }
 }

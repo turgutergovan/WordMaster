@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Intefaces
 {
-    public interface ILanguageRepository
+    public interface ILanguageRepository:IRepositoryBase<Language>
     {
-        Language GetById(int id);
-        List<Language> List();
-        void Add(Language entitiy);
-        void Update(Language entitiy);
-        void Delete(int id);
+        //Language GetById(int id);
+        //List<Language> List();
+        //void Add(Language entitiy);
+        //void Update(Language entitiy);
+        //void Delete(int id);
     }
 }

@@ -12,7 +12,7 @@ namespace DataAccessLayer.Entities
         [ForeignKey("LangId")]
         public virtual Language Lang { get; set; }
 
-        public virtual List<WordMeaning>WordMeanings { get; set; }
+        public virtual List<WordMeaning> WordMeanings { get; set; }
         
     }
 }

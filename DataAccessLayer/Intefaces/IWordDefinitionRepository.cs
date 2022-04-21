@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Intefaces
 {
-    public interface IWordDefinitionRepository
+    public interface IWordDefinitionRepository:IRepositoryBase<WordDefinition>
     {
-        WordDefinition GetById(int id);
-        List<WordDefinition> List();
-        void Add(WordDefinition entitiy);
-        void Update(WordDefinition entitiy);
-        void Delete(int id);
+        //WordDefinition GetById(int id);
+        //List<WordDefinition> List();
+        //void Add(WordDefinition entitiy);
+        //void Update(WordDefinition entitiy);
+        //void Delete(int id);
 
     }
 }

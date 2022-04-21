@@ -9,7 +9,7 @@
 <p>
     <button type="button" class="btn btn-outline-dark"> <a asp-action ="Edit">Create New</a></button>
 </p>
-<table class="table table-hover table-dark">
+<table class="table table-striped">
     <thead>
         <tr>
             <th>
@@ -43,9 +43,9 @@
                 @Html.DisplayFor(modelItem => item.WordDefinitionId)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new {  id=item.Id  }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new {  id=item.Id })
+                <button type="button" class="btn btn-warning"> @Html.ActionLink("Edit", "Edit", new { id=item.Id})  </button>
+               
+               <button type="button" class="btn btn-warning"> @Html.ActionLink("Delete", "Delete", new { id=item.Id}) </button>
             </td>
         </tr>
 }
