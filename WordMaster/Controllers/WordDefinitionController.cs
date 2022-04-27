@@ -1,8 +1,12 @@
 ﻿using DataAccessLayer.Entities;
 using DataAccessLayer.Intefaces;
+using DataAccessLayer.Intefaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using WordMaster.Models;
 
 namespace WordMaster.Controllers
@@ -11,7 +15,7 @@ namespace WordMaster.Controllers
     {
         IWordDefinitionRepository _repository;
         ILanguageRepository _langRepository;
-        public WordDefinitionController(IWordDefinitionRepository repository,ILanguageRepository langRepository)
+        public WordDefinitionController(IWordDefinitionRepository repository, ILanguageRepository langRepository)
         {
             _repository = repository;
             _langRepository = langRepository;
@@ -19,46 +23,75 @@ namespace WordMaster.Controllers
         // GET: LanguageController
         public ActionResult Index()
         {
-            List<WordDefinitionViewModel> model = new List<WordDefinitionViewModel>();
+            WordDefIndexViewModel model = new WordDefIndexViewModel();
+            var langs = _langRepository.List();
+            model.Langs = new List<LanguageViewModel>();
 
-            List<WordDefinition> liste = _repository.List();
-
-            foreach(WordDefinition Item in liste)
+            foreach (var lng in langs)
             {
-                WordDefinitionViewModel wdm = new WordDefinitionViewModel()
-                {
-                    Word = Item.Word,
-                    Id = Item.Id,
-                    LangId = Item.LangId,
-                    LangCode =Item.Lang.Code,
-                    LangName = Item.Lang.Name,
-                    
-                };
-                model.Add(wdm);
+                model.Langs.Add(new LanguageViewModel() { Id = lng.Id, Code = lng.Code, Name = lng.Name });
             }
 
             return View(model);
         }
 
-        
+        public IActionResult ListPartial(string searchKeyword, int? selectedLang)
+        {
+            List<WordDefinitionViewModel> model = new List<WordDefinitionViewModel>();
 
-        
+            //List<WordDefinition> liste = searchKeyword != null ?
+            //                            _repository.List(searchKeyword) :
+            //                            _repository.List();
+            List<WordDefinition> liste = _repository.List(searchKeyword, selectedLang);
 
+            foreach (WordDefinition item in liste)
+            {
+                WordDefinitionViewModel lwm = new WordDefinitionViewModel()
+                {
+                    Id = item.Id,
+                    Word = item.Word,
+                    LangId = item.LangId,
+                    LangCode = item.Lang.Code,
+                    LangName = item.Lang.Name,
+                    Meanings = new List<WordMeaningViewModel>()
+                };
+
+                foreach (var meaning in item.WordMeanings)
+                {
+                    lwm.Meanings.Add(new WordMeaningViewModel()
+                    {
+                        Id = meaning.Id,
+                        LangId = meaning.LangId,
+                        Meaning = meaning.Meaning,
+                        WordDefinitionId = meaning.WordDefinitionId,
+                        SelectedLang = new LanguageViewModel()
+                        {
+                            Code = meaning.Lang.Code,
+                            Id = meaning.Lang.Id,
+                            Name = meaning.Lang.Name
+                        }
+                    });
+                }
+
+                model.Add(lwm);
+            }
+            return PartialView(model);
+        }
         // GET: LanguageController/Edit/5
         public ActionResult Edit(int? id)
         {
             WordDefinitionViewModel model = new WordDefinitionViewModel();
             if (id.HasValue && id > 0)
             {
-                WordDefinition def = _repository.GetById(id.Value);
+                WordDefinition wd = _repository.GetById(id.Value);
 
-                model.Word = def.Word;
-                model.Id = def.Id;
-                model.LangId = def.LangId;
+                model.Id = wd.Id;
+                model.Word = wd.Word;
+                model.LangId = wd.LangId;
             }
             ViewBag.Langs = _langRepository.List();
+
             return View(model);
-            
         }
 
         // POST: LanguageController/Edit/5
@@ -66,35 +99,30 @@ namespace WordMaster.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(WordDefinitionViewModel model)
         {
-            WordDefinition entitiy = new WordDefinition() 
-            { 
-                LangId = model.LangId, 
-                Id =model.Id,
+            WordDefinition entity = new WordDefinition()
+            {
+                Id = model.Id,
+                LangId = model.LangId,
                 Word = model.Word
             };
 
-            if (entitiy.Id>0)
+            if (entity.Id > 0)
             {
-                _repository.Update(entitiy);
+                _repository.Update(entity);
             }
             else
             {
-                _repository.Add(entitiy);
+                _repository.Add(entity);
             }
             return RedirectToAction("Index");
         }
-
-
 
         // GET: LanguageController/Delete/5
         public ActionResult Delete(int id)
         {
             _repository.Delete(id);
             return RedirectToAction("Index");
-            
         }
-
-
 
         // POST: LanguageController/Delete/5
         [HttpPost]

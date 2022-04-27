@@ -37,10 +37,10 @@
                 @Html.DisplayFor(modelItem => item.Meaning)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LangId)
+                @Html.DisplayFor(modelItem => item.SelectedWordDefinition.Word)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.WordDefinitionId)
+            <td title="@item.SelectedLang.Name">
+                @Html.DisplayFor(modelItem => item.SelectedLang.Code)
             </td>
             <td>
                 <button type="button" class="btn btn-warning"> @Html.ActionLink("Edit", "Edit", new { id=item.Id})  </button>

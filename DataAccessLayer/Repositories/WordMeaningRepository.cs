@@ -18,6 +18,22 @@ namespace DataAccessLayer.Repositories
             
         }
 
+        public override WordMeaning GetById(int id)
+        {
+            return _context.Set<WordMeaning>().Include(c => c.WordDef).Include(c => c.Lang).First(c => c.Id == id);
+        }
+
+
+        public override List<WordMeaning> List()
+        {
+            return _context.Set<WordMeaning>().Include(c => c.WordDef).Include(c => c.Lang).ToList();
+        }
+
+        public List<WordMeaning> ListByDefId (int defId)
+        {
+            return _context.Set<WordMeaning>().Include(c => c.Lang).Where(c => c.WordDefinitionId == defId).ToList();
+        }
+
 
 
         //public WordMeaning GetById(int id)
@@ -54,6 +70,6 @@ namespace DataAccessLayer.Repositories
         //    _context.SaveChanges();
         //}
 
-        
+
     }
 }
