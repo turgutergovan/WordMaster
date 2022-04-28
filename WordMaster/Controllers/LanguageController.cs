@@ -36,6 +36,11 @@ namespace WordMaster.Controllers
             return View(model);
         }
 
+        public IActionResult Index1()
+        {
+            return View();
+        }
+
         // GET: LanguageController/Details/5
         public ActionResult Details(int id)
         {
